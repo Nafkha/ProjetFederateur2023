@@ -12,6 +12,6 @@ class JobOffer(models.Model):
     url = models.CharField(max_length=150)
     img = models.CharField(max_length=150)
     type_poste = models.CharField(max_length=45)
-    diplome = models.CharField(max_length=45)
-    Experience = models.CharField(max_length=45)
+    diplome = models.CharField(max_length=100)
+    Experience = models.CharField(max_length=100)
 # Create your models here.
