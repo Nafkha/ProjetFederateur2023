@@ -14,4 +14,20 @@ class JobOffer(models.Model):
     type_poste = models.CharField(max_length=45)
     diplome = models.CharField(max_length=100)
     Experience = models.CharField(max_length=100)
+    
+    def to_dict(self):
+        return {
+            'objectID': str(self.pk),
+            'Entreprise': self.Entreprise,
+            'Titre': self.Titre,
+            'Date': self.Date.isoformat(),
+            'Description': self.Description,
+            'Lieu': self.Lieu,
+            'Salaire': self.Salaire,
+            'url': self.url,
+            'img': self.img,
+            'type_poste': self.type_poste,
+            'diplome': self.diplome,
+            'Experience': self.Experience
+        }
 # Create your models here.

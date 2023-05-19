@@ -141,3 +141,4 @@ ALGOLIA = {
     'SEARCH_ONLY_API_KEY': 'ccb32d6b7bf7bd9b827c4683d0a02c0c',
     'INDEX_NAME': 'offre_emploi',
 }
+

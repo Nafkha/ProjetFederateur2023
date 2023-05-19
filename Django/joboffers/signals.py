@@ -16,9 +16,9 @@ def handle_algolia_update(sender, **kwargs):
         fields = ('Entreprise', 'Titre', 'Date', 'Description', 'Lieu', 'Salaire', 'url', 'img', 'type_poste', 'diplome', 'Experience')
     
     # Convert the JobOffer objects to dictionaries
-    records = [offre.to_dict() for offre in JobOffer.objects.all()]  
-
-    index.save_objects(records, {'autoGenerateObjectIDIfNotExist': True})
-    # print('Objects indexed successfully.')
+    # records = [offre.to_dict() for offre in JobOffer.objects.all()] 
+    #index.clear_objects() 
+    for offre in JobOffer.objects.all():
+        index.save_object(offre.to_dict())
 
 
