@@ -134,3 +134,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'ProjetFederateur/static/'),
 ]
+
+ALGOLIA = {
+    'APPLICATION_ID': 'ANJZKCTTPT',
+    'API_KEY': 'eca59778ff3237f7e961cb2787b74044',
+    'SEARCH_ONLY_API_KEY': 'ccb32d6b7bf7bd9b827c4683d0a02c0c',
+    'INDEX_NAME': 'offre_emploi',
+}
+

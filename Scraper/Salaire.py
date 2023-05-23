@@ -24,5 +24,7 @@ for r in Response:
     except:
         continue
   
-
-print("Salaire min : ",salaries[0], "  Salaire max : ",salaries[1])
+try:
+    print("Salaire min : ",salaries[0], "  Salaire max : ",salaries[1])
+except:
+    print("No Salary")

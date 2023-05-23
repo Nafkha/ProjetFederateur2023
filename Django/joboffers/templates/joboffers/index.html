@@ -30,6 +30,13 @@
 
     <!-- Template Stylesheet -->²
     <link type="text/css" href="{% static '/css/style.css'%}" rel="stylesheet">
+
+    <!-- Algolia -->
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/autocomplete.js@0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.40.1/dist/autocomplete.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-js"></script>
+
 </head>
 
 <body>
@@ -114,7 +121,7 @@
                     <div class="col-md-10">
                         <div class="row g-2">
                             <div class="col-md-4">
-                                <input type="text" class="form-control border-0" placeholder="Keyword" />
+                                <input type="text" id="search-input" class="form-control border-0" placeholder="Keyword" />
                             </div>
                             <div class="col-md-4">
                                 <select class="form-select border-0">
@@ -135,11 +142,84 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <button class="btn btn-dark border-0 w-100">Search</button>
+                        <button id="search-button" class="btn btn-dark border-0 w-100">Search</button>
                     </div>
                 </div>
             </div>
+            <div id="results-container"></div>
         </div>
+
+        <script>
+            // Configuration d'Algolia
+            const client = algoliasearch('ANJZKCTTPT', 'eca59778ff3237f7e961cb2787b74044');
+            const index = client.initIndex('offre_emploi');
+          
+            // Capture de l'événement de recherche
+            const searchButton = document.getElementById('search-button');
+            const resultsContainer = document.getElementById('results-container');
+          
+            searchButton.addEventListener('click', function() {
+              const searchTerm = document.getElementById('search-input').value;
+          
+              // Envoi de la requête de recherche
+              index.search(searchTerm).then(function(response) {
+                // Affichage des résultats de recherche
+                const hits = response.hits;
+                var resultsContainer = document.getElementById("tab-22");
+          
+                if (hits.length > 0) {
+                  for (let i = 0; i < hits.length; i++) {
+                    const hit = hits[i];
+                    const resultItem = document.createElement('div');
+                    //resultItem.textContent = hit.Titre; // Attribut à afficher
+                    resultsContainer.innerHTML+= '<div class="job-4item p-4 mb-4"><div class="row g-4"><div class="col-sm-12 col-md-8 d-flex align-items-center">'+
+                        '<img class="flex-shrink-0 img-fluid border rounded" src="'+hit.img+'" alt="" style="width: 80px; height: 80px;"><div class="text-start ps-4">'+
+                        '<h5 class="mb-3">'+hit.Titre+'</h5><span class="text-truncate me-3"><i class="far fa-building text-primary me-2"></i>'+hit.Entreprise+'</span>'+
+                        '<span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>'+hit.Lieu+'</span>'+
+                        '<span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>'+hit.Salaire+'</span></div></div>'+
+                        '<div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center"><div class="d-flex mb-3">'+
+                        '<a class="btn btn-light btn-square me-3" href=""><i class="far fa-heart text-primary"></i></a>'+'<a class="btn btn-primary" href="/job/'+hit.offer_id+'">Apply Now</a>'+
+                        '</div><small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>'+hit.Date+'</small></div></div></div></div>'
+                    //resultsContainer.appendChild(resultItem);
+                  }
+                } else {
+                  resultsContainer.textContent = 'Aucun résultat trouvé.';
+                }
+              });
+            });
+            // Configuration de l'autocomplétion
+        const autocompleteInput = document.getElementById('search-input');
+
+        autocompleteInput.addEventListener('input', function() {
+        const searchTerm = this.value;
+
+        // Options de l'autocomplétion
+        const autocompleteOptions = {
+            hitsPerPage: 5, // Nombre de suggestions à afficher
+            highlightPreTag: '<em>', // Balise HTML pour mettre en évidence les termes de recherche
+            highlightPostTag: '</em>',
+        };
+
+        // Création de l'autocomplétion
+        autocomplete(
+            '#search-input',
+            { hint: false },
+            {
+            source: autocomplete.sources.hits(index, autocompleteOptions),
+            displayKey: 'Titre', // Attribut à afficher dans les suggestions
+            templates: {
+                suggestion: function(suggestion) {
+                return suggestion._highlightResult.Titre.value;
+                },
+            },
+            }
+        ).on('autocomplete:selected', function(event, suggestion, dataset) {
+            // Remplir le champ de recherche avec la suggestion sélectionnée
+            autocompleteInput.value = suggestion.Titre;
+        });
+        });
+
+          </script>       
         <!-- Search End -->
 
 
@@ -208,6 +288,14 @@
             </div>
         </div>
         <!-- Category End -->
+        <div class="tab-content">
+            <div id="tab-22" class="tab-pane fade show p-0 active">
+
+            </div>
+             
+           
+
+        </div>
 
 
         <!-- About Start -->
@@ -299,6 +387,9 @@
                            {% endif %}
                             <a class="btn btn-primary py-3 px-5" href="">Browse More Jobs</a>
                         </div>
+
+                    </div>
+                </div>                       
 
                     </div>
                 </div>
