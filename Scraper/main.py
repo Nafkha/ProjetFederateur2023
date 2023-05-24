@@ -7,9 +7,9 @@ import datetime
 
 import datetime
 
-file = open(r'C:\Users\nafkh\OneDrive\Bureau\ProjetFederateur\testSelenium\log.txt','a')
+#file = open(r'C:\Users\nafkh\OneDrive\Bureau\ProjetFederateur\testSelenium\log.txt','a')
 
-file.write(f'Started : {datetime.datetime.now()} \n')
+#file.write(f'Started : {datetime.datetime.now()} \n')
 
 print(f'{Fore.GREEN}{"Keejob Scrapper":+^99}')
 print(f'{Fore.RESET}')
@@ -22,8 +22,8 @@ print(f'{Fore.RED}')
 print(f'{"Finished Scrapping":+^99}')
 print(f'{Fore.RESET}')
 time.sleep(2)
-file.write(f'Ended : {datetime.datetime.now()} \n')
+#file.write(f'Ended : {datetime.datetime.now()} \n')
 
 
 
-#fabskillScrapper(Keyword)
+keejobScrapper()

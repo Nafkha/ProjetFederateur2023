@@ -185,7 +185,7 @@ def scrape_jobs(keyword):
     # insertion des données dans la table "joboffers_joboffer"
     try:
         for job in job_details_list:
-            sql = "INSERT INTO joboffers_joboffer (Entreprise, Titre, Date, Description, Lieu, Salaire, url, img, Experience, diplome, type_poste) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            sql = "INSERT INTO joboffers_joboffer (Entreprise, Titre, Date, Description, Lieu, Salaire, url, img, Experience, diplome, type_poste,SalaireMin,SalaireMax) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,'NS','NS')"
             values = (job["post_company"], job["post_title"], job["post_date"], job["post_description"], job["post_location"], EMPTY, job["post_link"], job["post_img"], job["post_experience"], job["post_education"], job["post_contract_type"])
             cursor.execute(sql, values)
             print("Offre d'emploi insérée avec succès")
