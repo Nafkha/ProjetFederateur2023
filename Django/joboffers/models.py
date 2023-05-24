@@ -14,7 +14,8 @@ class JobOffer(models.Model):
     type_poste = models.CharField(max_length=45)
     diplome = models.CharField(max_length=100)
     Experience = models.CharField(max_length=100)
-    
+    SalaireMin = models.CharField(max_length=10)
+    SalaireMax = models.CharField(max_length=10)
     def to_dict(self):
         return {
             'objectID': str(self.pk),

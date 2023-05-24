@@ -8,10 +8,11 @@ from convertDate import convert_dates
 from convertDate import convert_single_date
 from convertDate import convert_num_date
 from convertDate import isToday
-file_o = open(r'C:\Users\nafkh\OneDrive\Bureau\ProjetFederateur\testSelenium\log_1.txt','a')
+from Salaire import predictSalary
+#file_o = open(r'C:\Users\nafkh\OneDrive\Bureau\ProjetFederateur\testSelenium\log_1.txt','a')
 def keejobScrapper():
     
-    file_o.write(f'Started \n')
+    #file_o.write(f'Started \n')
 
     connection  = mysql.connector.connect(
         user= 'root',
@@ -44,7 +45,7 @@ def keejobScrapper():
                 data = ("Entreprise Anonyme",j.text)
             cursor.execute(select_req,data)
             res = cursor.fetchone()
-            file_o.write(f'{data[0]}  {convert_num_date(d.text)}\n')
+            #file_o.write(f'{data[0]}  {convert_num_date(d.text)}\n')
             if(not isToday(convert_num_date(d.text))):
                 still_pages = False
                 break
@@ -66,10 +67,10 @@ def keejobScrapper():
         else:
             print("Scrapped : ",page_number," pages")
         page_number+=1
-    file_o.write(f' scraped {scraped_posts} job offers \n')
+    #file_o.write(f' scraped {scraped_posts} job offers \n')
 
 def scrap_posts(posts,connection,cursor,driver):
-        add_job = """INSERT INTO joboffers_joboffer(entreprise,titre,date,description,lieu,salaire,url,img,Experience,diplome,type_poste) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+        add_job = """INSERT INTO joboffers_joboffer(entreprise,titre,date,description,lieu,salaire,url,img,Experience,diplome,type_poste,SalaireMin,SalaireMax) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
 
 
         for p in posts:
@@ -103,12 +104,20 @@ def scrap_posts(posts,connection,cursor,driver):
             print(logo)
             date_publication = convert_single_date(date_publication)
 
-            data = (entreprise,job_title,date_publication,descriptions,lieu_travail,current_salaire,p,logo,Experience,Diplome,Type_Poste)
+            try:
+                salaries = predictSalary(job_title)
+                salaireMin = salaries[0]
+                salaireMax = salaries[1]
+            except:
+                salaireMin = "NS"
+                salaireMax = "NS"
+
+            data = (entreprise,job_title,date_publication,descriptions,lieu_travail,current_salaire,p,logo,Experience,Diplome,Type_Poste,salaireMin,salaireMax)
             try:
                 cursor.execute(add_job,data)
                 connection.commit()
                 print("Data inserted into the database")
-                file_o.write(f'Work Inserted into database \n')
+                #file_o.write(f'Work Inserted into database \n')
             except:
                 print(data[0]," ",data[1])
                 #print("Data duplicated")
